@@ -81,23 +81,28 @@
 
 html,
 body {
-  max-width: 100vw;
-  overflow-x: hidden;
+	min-width: 360px;
+	background-color: var(--bg-color);
+	color: var(--text-white);
+	font-family: 'Skyfont', sans-serif;
+	scroll-behavior: smooth;
+	overflow-x: hidden;
+	position: relative;
+	scroll-behavior: smooth;
+	scroll-padding-top: 110px;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@font-face {
+  font-family: "Skyfont";
+  src: local("Skyfont"),
+    url("../fonts/Skyfont-NonCommercial.otf") format("opentype");
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+
+@font-face {
+  font-family: "Airplane";
+  src: local("Airplane"),
+    url("../fonts/Airplane.ttf") format("truetype");
 }
 
 @media (prefers-color-scheme: dark) {

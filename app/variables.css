@@ -1,0 +1,27 @@
+:root {
+	/* COLORS */
+	--bg-color: #000000;
+	--off-white: #e8e8e8;
+	--off-white-light: rgba(232, 232, 232, 0.5);
+	--text-dark: #0e0e0e;
+	--text-light: rgba(232, 232, 232, 0.55);
+	--text-white: rgba(232, 232, 232, 0.5);
+	--border-color: #313131;
+	--yellow-color: #fce205;
+
+	--page-padding: 56px;
+
+	--border: 1px solid var(--border-color);
+}
+
+@media screen and (max-width: 1024px) {
+	:root {
+		--page-padding: 36px;
+	}
+}
+
+@media screen and (max-width: 639px) {
+	:root {
+		--page-padding: 16px;
+	}
+}
