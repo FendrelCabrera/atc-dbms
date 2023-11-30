@@ -2,9 +2,11 @@ import os
 from dotenv import load_dotenv
 import pyodbc
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 
 load_dotenv()
 app = Flask(__name__)
+CORS(app)
 
 if os.getenv("DB_CONN_STRING") == None:
     print("EnvNotFound")
@@ -30,11 +32,52 @@ def add_user():
         cursor = connection.cursor()
         cursor.execute(f"INSERT INTO customer (cname, age, gender, email, pass) VALUES ('{name}', {age}, '{gender}', '{email}', '{password}')")
         cursor.commit()
+
+        cursor.execute('SELECT cid FROM customer WHERE email=?', email)
+        r = cursor.fetchall()
         cursor.close()
 
-        return {}
+        return { "cid" : r[0][0] }
     except Exception as e:
-        return jsonify({"message":str(e)}), 400
+        print(e)
+        return {}, 400
+    
+@app.route("/userlogin", methods = ["POST"])
+def userlogin():
+    try:
+        data = request.json
+        email = data['email']
+        password = data['password']
+
+        cursor = connection.cursor()
+        cursor.execute("SELECT cid FROM customer WHERE email=? AND pass=?", email, password)
+        r = cursor.fetchall()
+        cursor.close()
+
+        if len(r) == 1:
+            return jsonify({"cid": r[0][0]})
+        else:
+            return {}, 400
+    except Exception as e:
+        print(e)
+        return {}, 400
+    
+@app.route("/adminlogin", methods = ["POST"])
+def adminlogin():
+    try:
+        #print(request.headers.get("Content-Type"))
+        data = request.json
+        password = data['password']
+
+        print(password)
+
+        if password == os.getenv("ADMIN_PASS"):
+            return {}
+        else:
+            return {}, 400
+    except Exception as e:
+        print(e)
+        return {}, 400
 
 @app.route('/add_flight', methods=['POST'])
 def add_flight():
@@ -52,7 +95,8 @@ def add_flight():
 
         return {}
     except Exception as e:
-        return jsonify({"message":str(e)}), 400
+        print(e)
+        return {}, 400
 
 @app.route('/remove_flight', methods=['DELETE'])
 def remove_flight():
@@ -67,7 +111,8 @@ def remove_flight():
         
         return {}
     except Exception as e:
-        return jsonify({"message":str(e)}), 400
+        print(e)
+        return {}, 400
 
 @app.route('/add_route', methods=['POST'])
 def add_route():
@@ -86,7 +131,27 @@ def add_route():
 
         return {}
     except Exception as e:
-        return jsonify({"message":str(e)}), 400
+        print(e)
+        return {}, 400
+    
+@app.route('/all_routes', methods = ["GET"])
+def all_routes():
+    try:
+        cursor = connection.cursor()
+        cursor.execute("SELECT rid, rtype, dtime, alName, R.fNum, aCode, loc\
+                       FROM route R, flight F, airline L, airport A\
+                       WHERE R.locId = A.aCode AND R.fNum = F.fNum AND F.alCode = L.alCode")
+        records = cursor.fetchall()
+        cursor.close()
+
+        data = {}
+        for r in records:
+            data[r[0]] = list(r)[1:]
+
+        return jsonify(data)
+    except Exception as e:
+        print(e)
+        return {}, 400
 
 @app.route('/remove_route', methods=['POST'])
 def remove_route():
@@ -101,7 +166,8 @@ def remove_route():
 
         return {}
     except Exception as e:
-        return jsonify({"message":str(e)}), 400
+        print(e)
+        return {}, 400
 
 @app.route('/add_runway', methods=['POST'])
 def add_runway():
@@ -117,7 +183,8 @@ def add_runway():
 
         return {}
     except Exception as e:
-        return jsonify({"message":str(e)}), 400
+        print(e)
+        return {}, 400
 
 
 @app.route('/update_runway', methods=['PUT'])
@@ -133,7 +200,8 @@ def update_runway():
 
         return {}
     except Exception as e:
-        return jsonify({"message":str(e)}), 400
+        print(e)
+        return {}, 400
 
 @app.route('/book_ticket', methods=['POST'])
 def book_ticket():
@@ -146,13 +214,36 @@ def book_ticket():
         mealOption = data["mealOption"]
 
         cursor = connection.cursor()
-        cursor.execute(f"INSERT INTO ticket (cid, rid, seatNum, class, mealOption) VALUES ({cid}, {rid} , '{seatNum}', {seatClass}, '{mealOption}')")
+        cursor.execute("INSERT INTO ticket (cid, rid, seatNum, class, mealOption) VALUES (?, ?, ?, ?, ?)", cid, rid, seatNum, seatClass, mealOption)
         cursor.commit()
         cursor.close()
 
         return {}
     except Exception as e:
-        return jsonify({"message":str(e)}), 400
+        print(e)
+        return {}, 400
+    
+@app.route("/ticket_history", methods = ["GET"])
+def ticket_history():
+    try:
+        data = request.json
+        cid = data["cid"]
+
+        cursor = connection.cursor()
+        cursor.execute("SELECT tNo, seatNum, class, mealOption, rtype, dtime, alName, R.fNum, aName, loc\
+                       FROM ticket T, route R, airport A, flight F, airline L\
+                       WHERE T.cid = ? AND T.rid = R.rid AND R.locId = A.aCode AND R.fNum = F.fNum AND F.alCode = L.alCode", cid)
+        records = cursor.fetchall()
+        cursor.close()
+
+        data = {}
+        for r in records:
+            data[r[0]] = [*(list(r)[1:])]
+        
+        return jsonify(data)
+    except Exception as e:
+        print(e)
+        return {}, 400
 
 
 @app.route('/cancel_ticket', methods=['DELETE'])
@@ -168,7 +259,8 @@ def cancel_ticket():
 
         return {}
     except Exception as e:
-        return jsonify({"message":str(e)}), 400
+        print(e)
+        return {}, 400
 
 
 @app.route('/get_airports', methods=['GET'])
@@ -185,7 +277,8 @@ def get_airports():
     
         return jsonify(data)
     except Exception as e:
-        return jsonify({"message":str(e)}), 400
+        print(e)
+        return {}, 400
 
 try:
     app.run(debug=True)
