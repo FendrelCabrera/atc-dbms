@@ -10,7 +10,17 @@
     color: #080808;
     font-size: 20px;
     font-family: 'Airplane', sans-serif;
-}  
+}
+
+.cardbodytext{
+    font-size: 25px;
+    font-family: 'WalkwayUltraBold', sans-serif;
+}
+
+.cardbodysmall{
+    font-size: 18px;
+    font-family: 'WalkwayUltraBold', sans-serif;
+}
   
 @media screen and (max-width: 1024px) {
     .cardtext {

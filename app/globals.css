@@ -84,7 +84,7 @@ body {
 	min-width: 360px;
 	background-color: var(--bg-color);
 	color: var(--text-white);
-	font-family: 'Skyfont', sans-serif;
+	font-family: 'Airplane', sans-serif;
 	scroll-behavior: smooth;
 	overflow-x: hidden;
 	position: relative;
@@ -103,6 +103,24 @@ body {
   font-family: "Airplane";
   src: local("Airplane"),
     url("../fonts/Airplane.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "WalkwayBold";
+  src: local("WalkwayBold"),
+    url("../fonts/WalkwayBold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "WalkwaySemiBold";
+  src: local("WalkwaySemiBold"),
+    url("../fonts/WalkwaySemiBold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "WalkwayUltraBold";
+  src: local("WalkwayUltraBold"),
+    url("../fonts/WalkwayUltraBold.ttf") format("truetype");
 }
 
 @media (prefers-color-scheme: dark) {

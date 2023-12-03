@@ -1,21 +1,21 @@
-import styles from './page.module.css'
-import Navbar from "../components/Navbar"
-import Header from '../components/Header'
-import Boarding from '../components/Boarding'
-import Card from '../components/Card'
+'use client'
+import LoginPage from './components/loginPage';
+import Display from './components/homePage';
+
+import { createContext, useState } from 'react'
+
+const Auth = createContext();
 
 export default function Home() {
+  const [user, setUser] = useState(-3);
+
   return (
-    <div className={styles['background-image']}>
-      <head>
-        <title>ATC</title>
-      </head>
-      <Navbar/>
-      <Header heading="Welcome to CCJ"/>
-      <div style={{display:"flex", justifyContent:"space-around"}}>
-      <Boarding boarding="EK374 8:00 9:30 DAMMAM"/>
-      <Card title="ATC" description="We strive to make our airport a haven for travellers" image="/routes.png" main="Airport" tab="Airlines" othertab="Destinations"/>
-      </div>
-    </div>
+    <Auth.Provider value={{user, setUser}}>
+      <Display />
+      <LoginPage />  
+    </Auth.Provider>
   )
 }
+
+export { Auth }
+

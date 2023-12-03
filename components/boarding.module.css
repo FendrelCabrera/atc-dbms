@@ -3,6 +3,11 @@
 	width: 50%;
 }
 
+.board{
+	background-color: rgba(30,30,20,0.8);
+	border-radius: 20px;
+}
+
 .heading-part {
 	padding: var(--page-padding);
 	max-width: 2000px;
@@ -27,10 +32,10 @@
 
 @media screen and (max-width: 767px) {
 	.heading {
-		font-size: 40px;
+		font-size: 35px;
 	}
 
 	.heading-part {
-		padding-top: 32px;
+		padding-top: 25px;
 	}
 }

@@ -1,7 +1,8 @@
 import styles from './page.module.css'
-import Navbar from "../../components/Navbar"
-import Header from '../../components/Header'
-import LoginCard from '../../components/LoginCard'
+import Navbar from "@/components/Navbar"
+import Header from '@/components/Header'
+import Boarding from '@/components/Boarding'
+import LoginCard from '@/components/LoginCard'
 
 export default function Home() {
   return (
@@ -11,8 +12,8 @@ export default function Home() {
       </head>
       <Navbar/>
       <Header heading="Connect with ATC"/>
-      <div style={{display:"flex", justifyContent:"space-around"}}>
-        <LoginCard login="Nah" />
+      <div className='d-flex justify-content-around'>
+        <Boarding boarding="" />
         <LoginCard login="Ye" />
       </div>
     </div>
