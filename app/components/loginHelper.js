@@ -46,13 +46,4 @@ const newuser = async(data) => {
     }
 }
 
-const getAirports = async () => {
-    try { 
-        let resp = await axios.get(`${backend}/get_airports`)
-        console.log(resp)
-    } catch(e) {
-        console.log(e)
-    }
-}
-
-export { getAirports, userLogin, adminLogin, newuser }
+export { userLogin, adminLogin, newuser }

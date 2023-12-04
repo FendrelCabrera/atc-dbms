@@ -267,7 +267,7 @@ def cancel_ticket():
 def get_airports():
     try:
         cursor = connection.cursor()
-        cursor.execute("SELECT * from airport")
+        cursor.execute("SELECT * from airport ORDER BY aName")
         records = cursor.fetchall()
         cursor.close()
 
