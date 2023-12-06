@@ -1,0 +1,15 @@
+.formtext{
+    color: #080808;
+    font-size: 30px;
+    font-family: 'Airplane', sans-serif;
+}  
+
+.formbodytext{
+    font-size: 25px;
+    font-family: 'WalkwayUltraBold', sans-serif;
+}
+
+.formbodysmall{
+    font-size: 18px;
+    font-family: 'WalkwayUltraBold', sans-serif;
+}

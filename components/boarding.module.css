@@ -1,0 +1,41 @@
+.container {
+	border-bottom: var(--border);
+	width: 50%;
+}
+
+.board{
+	background-color: rgba(30,30,20,0.8);
+	border-radius: 20px;
+}
+
+.heading-part {
+	padding: var(--page-padding);
+	max-width: 2000px;
+	display: flex;
+	flex-direction: column;
+}
+
+.heading {
+	background-color: rgba(255,255,255,0.5);
+	border-radius: 20px;
+	font-family: 'Skyfont', sans-serif;
+    align-self: center;
+	font-size: 60px;
+	line-height: 1.2;
+}
+
+@media screen and (max-width: 1024px) {
+	.heading {
+		font-size: 76px;
+	}
+}
+
+@media screen and (max-width: 767px) {
+	.heading {
+		font-size: 35px;
+	}
+
+	.heading-part {
+		padding-top: 25px;
+	}
+}

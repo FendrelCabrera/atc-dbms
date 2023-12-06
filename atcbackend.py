@@ -69,7 +69,7 @@ def adminlogin():
         data = request.json
         password = data['password']
 
-        print(password)
+        #print(password)
 
         if password == os.getenv("ADMIN_PASS"):
             return {}
@@ -98,7 +98,7 @@ def add_flight():
         print(e)
         return {}, 400
 
-@app.route('/remove_flight', methods=['DELETE'])
+@app.route('/remove_flight', methods=['POST'])
 def remove_flight():
     try:
         data = request.json
@@ -138,15 +138,21 @@ def add_route():
 def all_routes():
     try:
         cursor = connection.cursor()
-        cursor.execute("SELECT rid, rtype, dtime, alName, R.fNum, aCode, loc\
-                       FROM route R, flight F, airline L, airport A\
-                       WHERE R.locId = A.aCode AND R.fNum = F.fNum AND F.alCode = L.alCode")
+        # cursor.execute("SELECT rid, rtype, dtime, alName, R.fNum, aCode, loc\
+        #                FROM route R, flight F, airline L, airport A\
+        #                WHERE R.locId = A.aCode AND R.fNum = F.fNum AND F.alCode = L.alCode")
+        cursor.execute("SELECT rid, fNum, FORMAT(dtime, 'HH:mm'), CASE \
+                        WHEN rtype = 1 THEN 'A' \
+                        WHEN rtype = 0 THEN 'D' \
+                        END , SUBSTRING(loc, 1, CHARINDEX(',', loc) - 1) \
+                        FROM route, airport \
+                        WHERE locId = aCode")
         records = cursor.fetchall()
         cursor.close()
 
         data = {}
         for r in records:
-            data[r[0]] = list(r)[1:]
+            data[r[0]] = list(map(str, r[1:]))
 
         return jsonify(data)
     except Exception as e:
@@ -187,11 +193,13 @@ def add_runway():
         return {}, 400
 
 
-@app.route('/update_runway', methods=['PUT'])
+@app.route('/update_runway', methods=['POST'])
 def update_runway():
     try:
         data = request.json
         runId = data["runId"]
+
+        print(runId)
 
         cursor = connection.cursor()
         cursor.execute(f"UPDATE runway SET runStatus = ~runStatus WHERE runId = {runId}")
@@ -207,10 +215,11 @@ def update_runway():
 def book_ticket():
     try:
         data = request.json
+        #print(data)
         cid = data["cid"]
         rid = data["rid"]
         seatNum = data["seatNum"]
-        seatClass = data["class"]
+        seatClass = data["seatClass"]
         mealOption = data["mealOption"]
 
         cursor = connection.cursor()

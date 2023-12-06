@@ -3,7 +3,7 @@ import { Auth } from '../page'
 import { adminLogin, userLogin, newuser } from './loginHelper';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
-import Form from 'react-bootstrap/Form'
+import Form from 'react-bootstrap/Form';
 import { Button } from 'react-bootstrap';
 
 const LoginPage = () => {
@@ -13,12 +13,12 @@ const LoginPage = () => {
         return null;
 
     return (
+
         <div className='d-flex flex-column vh-100 w-100 justify-content-center align-items-center'>
             <div className='container'>
                 <div className='row justify-content-center'>
                     <div className='col-md-7'>
-                        <Tabs defaultActiveKey="login" id="lp-tab"
-                        className=''>
+                        <Tabs defaultActiveKey="login" id="lp-tab" className=''>
                             <Tab eventKey="login" title="Login">
                                 <LoginForm />
                             </Tab>
